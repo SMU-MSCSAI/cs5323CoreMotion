@@ -31,6 +31,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func moveBlock(by distance: Float) {
+        var action = SKAction.moveBy(x: 0, y: 0, duration: 0.1)
+        if distance > 0 && spinBlock.position.x < self.size.width-30 {
+           action = SKAction.moveBy(x: CGFloat(distance), y: 0, duration: 0.1)
+        }else if distance < 0 && spinBlock.position.x+30 > 20 {
+            action = SKAction.moveBy(x: CGFloat(distance), y: 0, duration: 0.1)
+        }
+        self.spinBlock.run(action, withKey: "temp")
+    }
+    
     // MARK: View Hierarchy Functions
     let spinBlock = SKSpriteNode()
     let scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
@@ -72,7 +82,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.text = "Score: 0"
         scoreLabel.fontSize = 20
         scoreLabel.fontColor = SKColor.blue
-        scoreLabel.position = CGPoint(x: frame.midX, y: frame.minY)
+        scoreLabel.position = CGPoint(x: frame.midX, y: frame.minY+20)
         
         addChild(scoreLabel)
     }
@@ -98,7 +108,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func addBlockAtPoint(_ point:CGPoint){
         
-        spinBlock.color = UIColor.red
+        spinBlock.color = UIColor.orange
         spinBlock.size = CGSize(width:size.width*0.15,height:size.height * 0.05)
         spinBlock.position = point
         
@@ -106,7 +116,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         spinBlock.physicsBody?.contactTestBitMask = 0x00000001
         spinBlock.physicsBody?.collisionBitMask = 0x00000001
         spinBlock.physicsBody?.categoryBitMask = 0x00000001
-        spinBlock.physicsBody?.isDynamic = true
+        spinBlock.physicsBody?.isDynamic = false
         spinBlock.physicsBody?.pinned = true
         
         self.addChild(spinBlock)
@@ -116,7 +126,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func addStaticBlockAtPoint(_ point:CGPoint){
         let 🔲 = SKSpriteNode()
         
-        🔲.color = UIColor.red
+        🔲.color = UIColor.green
         🔲.size = CGSize(width:size.width*0.1,height:size.height * 0.05)
         🔲.position = point
         
